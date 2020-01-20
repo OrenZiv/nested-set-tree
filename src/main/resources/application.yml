@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    show-sql: true
+    database: POSTGRESQL
+    generate-ddl: false
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  datasource:
+    platform: postgres
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost/nestedTree
+    username: CHANGEME
+    password: CHANGEME
