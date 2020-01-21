@@ -37,7 +37,7 @@ public class NodeController {
 
     @PatchMapping("/{uuid}")
     public HttpStatus moveNode(@PathVariable UUID uuid, @RequestBody NodeDTO nodeDTO) {
-        nodeService.moveNode(getNode(uuid).getNodeId(), nodeDTO.getParentId());
+        nodeService.moveNode(getNode(uuid).getNodeId(), getNode(nodeDTO.getParentId()).getNodeId());
         return HttpStatus.OK;
     }
 

@@ -1,6 +1,8 @@
 package com.orez.nestedsettree.service;
 
 import com.orez.nestedsettree.dao.NodeRepository;
+import com.orez.nestedsettree.exception.DeleteNodeFailedException;
+import com.orez.nestedsettree.exception.MoveNodeFailedException;
 import com.orez.nestedsettree.mapper.NodeMapper;
 import com.orez.nestedsettree.model.NodeDTO;
 import org.springframework.stereotype.Service;
@@ -33,7 +35,7 @@ public class NodeService {
     }
 
     public List<NodeDTO> getSortedTreeNodes() {
-        return nodeRepository.findAllByOrderByLft()
+        return nodeRepository.findAllByOrderByLftAsc()
                 .stream()
                 .map(nodeMapper::map)
                 .collect(Collectors.toList());
@@ -47,12 +49,16 @@ public class NodeService {
 
     @Transactional
     public void deleteNode(UUID uuid) {
-        nodeRepository.deleteNode(uuid);
+        if (nodeRepository.deleteNode(uuid) != 1) {
+            throw new DeleteNodeFailedException(String.format("Failed to delete node with uuid: %s", uuid));
+        }
     }
 
     @Transactional
     public void moveNode(UUID uuid, UUID toParentUuid) {
-        nodeRepository.moveNode(uuid, toParentUuid);
+        if (nodeRepository.moveNode(uuid, toParentUuid) != 1) {
+            throw new MoveNodeFailedException(String.format("Failed to move node with uuid: %s to parent with uuid: %s", uuid, toParentUuid));
+        }
     }
 
     private NodeDTO rebuildTree(List<NodeDTO> sortedTreeNodes) {

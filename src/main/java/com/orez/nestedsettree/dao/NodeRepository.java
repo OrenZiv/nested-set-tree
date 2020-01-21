@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Repository
 public interface NodeRepository extends JpaRepository<Node, UUID> {
-    List<Node> findAllByOrderByLft();
+    List<Node> findAllByOrderByLftAsc();
 
     @Modifying
     @Procedure(name = "insert_node")
