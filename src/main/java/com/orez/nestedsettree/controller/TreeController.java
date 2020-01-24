@@ -1,21 +1,21 @@
 package com.orez.nestedsettree.controller;
 
 import com.orez.nestedsettree.model.NodeDTO;
-import com.orez.nestedsettree.service.NodeService;
+import com.orez.nestedsettree.service.TreeService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/tree")
 public class TreeController {
 
-    private NodeService nodeService;
+    private TreeService treeService;
 
-    public TreeController(NodeService nodeService) {
-        this.nodeService = nodeService;
+    public TreeController(TreeService treeService) {
+        this.treeService = treeService;
     }
 
     @GetMapping
     public NodeDTO getTree() {
-        return nodeService.getTree();
+        return treeService.getTree();
     }
 }

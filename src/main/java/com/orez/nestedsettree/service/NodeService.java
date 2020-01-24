@@ -8,7 +8,6 @@ import com.orez.nestedsettree.model.NodeDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,10 +22,6 @@ public class NodeService {
     public NodeService(NodeRepository nodeRepository, NodeMapper nodeMapper) {
         this.nodeRepository = nodeRepository;
         this.nodeMapper = nodeMapper;
-    }
-
-    public NodeDTO getTree() {
-        return rebuildTree(getSortedTreeNodes());
     }
 
     public Optional<NodeDTO> getNode(UUID uuid) {
@@ -59,26 +54,5 @@ public class NodeService {
         if (nodeRepository.moveNode(uuid, toParentUuid) != 1) {
             throw new MoveNodeFailedException(String.format("Failed to move node with uuid: %s to parent with uuid: %s", uuid, toParentUuid));
         }
-    }
-
-    private NodeDTO rebuildTree(List<NodeDTO> sortedTreeNodes) {
-        LinkedList<NodeDTO> fifo = new LinkedList<>();
-        NodeDTO tree = sortedTreeNodes.get(0);
-        fifo.add(tree);
-
-        for (int i = 1; i < sortedTreeNodes.size(); i++) {
-            NodeDTO currentNode = sortedTreeNodes.get(i);
-            NodeDTO previousNode = fifo.getLast();
-
-            if (currentNode.getRgt() < previousNode.getRgt()) {
-                previousNode.addChild(currentNode);
-                fifo.add(currentNode);
-            } else {
-                fifo.removeLast();
-                i--;
-            }
-        }
-
-        return tree;
     }
 }
