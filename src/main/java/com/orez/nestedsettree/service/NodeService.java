@@ -5,7 +5,6 @@ import com.orez.nestedsettree.exception.DeleteNodeFailedException;
 import com.orez.nestedsettree.exception.MoveNodeFailedException;
 import com.orez.nestedsettree.exception.NodeNotFoundException;
 import com.orez.nestedsettree.mapper.NodeMapper;
-import com.orez.nestedsettree.model.Node;
 import com.orez.nestedsettree.model.NodeDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
