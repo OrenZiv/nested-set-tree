@@ -3,6 +3,7 @@ package com.orez.nestedsettree.dao;
 import com.orez.nestedsettree.model.Node;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -25,5 +26,9 @@ public interface NodeRepository extends JpaRepository<Node, UUID> {
     @Modifying
     @Procedure(name = "move_node")
     Integer moveNode(@Param("p_node_uuid") UUID uuid, @Param("p_to_parent_uuid") UUID toParentUuid);
+
+    @Modifying
+    @Query("UPDATE Node Set description = ?2 WHERE nodeId = ?1")
+    Integer updateNodeDescription(UUID uuid, String description);
 
 }

@@ -4,6 +4,7 @@ import com.orez.nestedsettree.exception.NodeNotFoundException;
 import com.orez.nestedsettree.model.NodeDTO;
 import com.orez.nestedsettree.service.NodeService;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,7 +38,17 @@ public class NodeController {
 
     @PatchMapping("/{uuid}")
     public HttpStatus moveNode(@PathVariable UUID uuid, @RequestBody NodeDTO nodeDTO) {
-        nodeService.moveNode(getNode(uuid).getNodeId(), getNode(nodeDTO.getParentId()).getNodeId());
+
+        NodeDTO node = getNode(uuid);
+
+        if (nodeDTO.getParentId() != null) {
+            nodeService.moveNode(node.getNodeId(), getNode(nodeDTO.getParentId()).getNodeId());
+        }
+
+        if (nodeDTO.getDescription() != null) {
+            nodeService.updateNodeDescription(node.getNodeId(), nodeDTO.getDescription());
+        }
+
         return HttpStatus.OK;
     }
 

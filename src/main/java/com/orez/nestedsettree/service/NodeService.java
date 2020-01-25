@@ -3,7 +3,9 @@ package com.orez.nestedsettree.service;
 import com.orez.nestedsettree.dao.NodeRepository;
 import com.orez.nestedsettree.exception.DeleteNodeFailedException;
 import com.orez.nestedsettree.exception.MoveNodeFailedException;
+import com.orez.nestedsettree.exception.NodeNotFoundException;
 import com.orez.nestedsettree.mapper.NodeMapper;
+import com.orez.nestedsettree.model.Node;
 import com.orez.nestedsettree.model.NodeDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +55,13 @@ public class NodeService {
     public void moveNode(UUID uuid, UUID toParentUuid) {
         if (nodeRepository.moveNode(uuid, toParentUuid) != 1) {
             throw new MoveNodeFailedException(String.format("Failed to move node with uuid: %s to parent with uuid: %s", uuid, toParentUuid));
+        }
+    }
+
+    @Transactional
+    public void updateNodeDescription(UUID uuid, String description) {
+        if(nodeRepository.updateNodeDescription(uuid, description) != 1) {
+            throw new NodeNotFoundException(String.format("Failed to find node with uuid: %s", uuid));
         }
     }
 }
