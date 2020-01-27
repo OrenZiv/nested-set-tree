@@ -51,14 +51,24 @@ public class NodeService {
     }
 
     @Transactional
-    public void moveNode(UUID uuid, UUID toParentUuid) {
+    public void updateNode(UUID uuid, NodeDTO nodeDTO) {
+
+        if (nodeDTO.getParentId() != null) {
+            moveNode(uuid, nodeDTO.getParentId());
+        }
+
+        if (nodeDTO.getDescription() != null) {
+            updateNodeDescription(uuid, nodeDTO.getDescription());
+        }
+    }
+
+    private void moveNode(UUID uuid, UUID toParentUuid) {
         if (nodeRepository.moveNode(uuid, toParentUuid) != 1) {
             throw new MoveNodeFailedException(String.format("Failed to move node with uuid: %s to parent with uuid: %s", uuid, toParentUuid));
         }
     }
 
-    @Transactional
-    public void updateNodeDescription(UUID uuid, String description) {
+    private void updateNodeDescription(UUID uuid, String description) {
         if(nodeRepository.updateNodeDescription(uuid, description) != 1) {
             throw new NodeNotFoundException(String.format("Failed to find node with uuid: %s", uuid));
         }
