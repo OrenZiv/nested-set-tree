@@ -63,6 +63,8 @@ public class NodeService {
     }
 
     private void moveNode(UUID uuid, UUID toParentUuid) {
+        getNode(toParentUuid).orElseThrow(() -> new NodeNotFoundException(String.format("Failed to find node with uuid: %s", uuid)));
+
         if (nodeRepository.moveNode(uuid, toParentUuid) != 1) {
             throw new MoveNodeFailedException(String.format("Failed to move node with uuid: %s to parent with uuid: %s", uuid, toParentUuid));
         }
