@@ -1,5 +1,7 @@
 package com.orez.nestedsettree.service;
 
+import com.orez.nestedsettree.exception.NodesCorruptedException;
+import com.orez.nestedsettree.exception.NodesNotOrderedException;
 import com.orez.nestedsettree.model.NodeDTO;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ public class TreeService {
     }
 
     private NodeDTO rebuildTree(List<NodeDTO> sortedTreeNodes) {
+        validateNodeList(sortedTreeNodes);
+
         LinkedList<NodeDTO> fifo = new LinkedList<>();
         NodeDTO tree = sortedTreeNodes.get(0);
         fifo.add(tree);
@@ -38,5 +42,20 @@ public class TreeService {
         }
 
         return tree;
+    }
+
+    public static void validateNodeList(List<NodeDTO> nodes) {
+
+        for (int i = 1; i < nodes.size(); i++) {
+
+            Integer currNodeLft = nodes.get(i).getLft();
+            Integer prevNodeLft = nodes.get(i - 1).getLft();
+            if (currNodeLft < prevNodeLft) {
+                throw new NodesNotOrderedException("Nodes are not ordered by lft");
+            }
+            if (currNodeLft.equals(prevNodeLft)) {
+                throw new NodesCorruptedException("Nodes lft can't be equal, tree night be corrupted");
+            }
+        }
     }
 }
