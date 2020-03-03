@@ -44,7 +44,7 @@ public class TreeService {
         return tree;
     }
 
-    public static void validateNodeList(List<NodeDTO> nodes) {
+    private void validateNodeList(List<NodeDTO> nodes) {
 
         for (int i = 1; i < nodes.size(); i++) {
 
@@ -54,7 +54,7 @@ public class TreeService {
                 throw new NodesNotOrderedException("Nodes are not ordered by lft");
             }
             if (currNodeLft.equals(prevNodeLft)) {
-                throw new NodesCorruptedException("Nodes lft can't be equal, tree night be corrupted");
+                throw new NodesCorruptedException("lfts can't be equal, tree might be corrupted");
             }
         }
     }
