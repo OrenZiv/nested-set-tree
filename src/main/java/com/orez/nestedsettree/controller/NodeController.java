@@ -13,7 +13,7 @@ import java.util.UUID;
 @RequestMapping("/node")
 public class NodeController {
 
-    private NodeService nodeService;
+    private final NodeService nodeService;
 
     public NodeController(NodeService nodeService) {
         this.nodeService = nodeService;

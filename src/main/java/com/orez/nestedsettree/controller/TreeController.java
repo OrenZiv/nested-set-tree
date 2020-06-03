@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/tree")
 public class TreeController {
 
-    private TreeService treeService;
+    private final TreeService treeService;
 
     public TreeController(TreeService treeService) {
         this.treeService = treeService;
