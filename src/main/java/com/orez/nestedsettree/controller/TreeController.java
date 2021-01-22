@@ -14,8 +14,13 @@ public class TreeController {
         this.treeService = treeService;
     }
 
-    @GetMapping
-    public NodeDTO getTree() {
-        return treeService.getTree();
+    @GetMapping("/nestedSet")
+    public NodeDTO getNestedSetTree() {
+        return treeService.getNestedSetTree();
+    }
+
+    @GetMapping("/adjacencyList")
+    public NodeDTO getAdjacencyListTree() {
+        return treeService.getAdjacencyListTree();
     }
 }

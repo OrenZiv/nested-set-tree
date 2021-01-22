@@ -25,6 +25,19 @@ public class NodeService {
         this.nodeMapper = nodeMapper;
     }
 
+    public Optional<NodeDTO> getRootNode() {
+        return getChildrenOf(null)
+                .stream()
+                .findFirst();
+    }
+
+    public List<NodeDTO> getChildrenOf(UUID uuid) {
+        return nodeRepository.findByParentId(uuid)
+                .stream()
+                .map(nodeMapper::map)
+                .collect(Collectors.toList());
+    }
+
     public Optional<NodeDTO> getNode(UUID uuid) {
         return nodeRepository.findById(uuid)
                 .map(nodeMapper::map);

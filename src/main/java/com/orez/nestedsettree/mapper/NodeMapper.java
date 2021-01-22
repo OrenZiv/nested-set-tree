@@ -16,14 +16,4 @@ public class NodeMapper {
                 .description(node.getDescription())
                 .build();
     }
-
-    public Node map(NodeDTO nodeDTO) {
-        return Node.builder()
-                .nodeId(nodeDTO.getNodeId())
-                .lft(nodeDTO.getLft())
-                .rgt(nodeDTO.getRgt())
-                .parentId(nodeDTO.getParentId())
-                .description(nodeDTO.getDescription())
-                .build();
-    }
 }

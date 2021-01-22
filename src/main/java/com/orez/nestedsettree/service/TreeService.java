@@ -1,5 +1,6 @@
 package com.orez.nestedsettree.service;
 
+import com.orez.nestedsettree.exception.NodeNotFoundException;
 import com.orez.nestedsettree.exception.NodesCorruptedException;
 import com.orez.nestedsettree.exception.NodesNotOrderedException;
 import com.orez.nestedsettree.model.NodeDTO;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Service
 public class TreeService {
@@ -17,15 +19,33 @@ public class TreeService {
         this.nodeService = nodeService;
     }
 
-    public NodeDTO getTree() {
-        return rebuildTree(nodeService.getSortedTreeNodes());
+    public NodeDTO getAdjacencyListTree() {
+        NodeDTO parentNode = nodeService.getRootNode()
+                .orElseThrow(() -> new NodeNotFoundException("Root node not found!"));
+
+        return rebuildAdjacencyListTreeFrom(parentNode);
     }
 
-    private NodeDTO rebuildTree(List<NodeDTO> sortedTreeNodes) {
+    public NodeDTO getNestedSetTree() {
+        return rebuildNestedSetTree(nodeService.getSortedTreeNodes());
+    }
+
+    private NodeDTO rebuildAdjacencyListTreeFrom(NodeDTO parentNode) {
+
+        nodeService.getChildrenOf(parentNode.getNodeId())
+                .forEach(child -> {
+                    parentNode.addChild(child);
+                    rebuildAdjacencyListTreeFrom(child);
+                });
+
+        return parentNode;
+    }
+
+    private NodeDTO rebuildNestedSetTree(List<NodeDTO> sortedTreeNodes) {
         validateNodeList(sortedTreeNodes);
 
-        LinkedList<NodeDTO> fifo = new LinkedList<>();
         NodeDTO tree = sortedTreeNodes.get(0);
+        LinkedList<NodeDTO> fifo = new LinkedList<>();
         fifo.add(tree);
 
         for (int i = 1; i < sortedTreeNodes.size(); i++) {
@@ -46,16 +66,15 @@ public class TreeService {
 
     private void validateNodeList(List<NodeDTO> nodes) {
 
-        for (int i = 1; i < nodes.size(); i++) {
-
+        IntStream.range(1, nodes.size()).forEach(i -> {
             Integer currNodeLft = nodes.get(i).getLft();
             Integer prevNodeLft = nodes.get(i - 1).getLft();
             if (currNodeLft < prevNodeLft) {
                 throw new NodesNotOrderedException("Nodes are not ordered by lft");
             }
             if (currNodeLft.equals(prevNodeLft)) {
-                throw new NodesCorruptedException("lfts can't be equal, tree might be corrupted");
+                throw new NodesCorruptedException("lfts can't be equal, tree is corrupted");
             }
-        }
+        });
     }
 }

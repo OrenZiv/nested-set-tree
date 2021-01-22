@@ -13,6 +13,9 @@ import java.util.UUID;
 
 @Repository
 public interface NodeRepository extends JpaRepository<Node, UUID> {
+
+    List<Node> findByParentId(UUID uuid);
+
     List<Node> findAllByOrderByLftAsc();
 
     @Modifying

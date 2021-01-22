@@ -27,13 +27,13 @@ public class TreeServiceTest {
     @Test(expected = NodesNotOrderedException.class)
     public void nodesNotSortedWhenBuildingTree() {
         when(nodeService.getSortedTreeNodes()).thenReturn(nodesList(1,4,2,3));
-        treeService.getTree();
+        treeService.getNestedSetTree();
     }
 
     @Test(expected = NodesCorruptedException.class)
     public void nodesLftsDuplicateWhenBuildingTree() {
         when(nodeService.getSortedTreeNodes()).thenReturn(nodesList(1,2,2,3,4));
-        treeService.getTree();
+        treeService.getNestedSetTree();
     }
 
     private List<NodeDTO> nodesList(Integer... lfts) {
