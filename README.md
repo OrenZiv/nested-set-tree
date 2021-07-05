@@ -6,7 +6,7 @@ Sql functions are based on the implementation in [werc/TreeTraversal](https://gi
 
 ## Getting Started
 
-`gradle clean build bootRun` from the projects root folder should build and run the service given the prerequisites are met.
+`./gradlew clean build bootRun` from the projects root folder should build and run the service given the prerequisites are met.
 
 ## Technologies
 
