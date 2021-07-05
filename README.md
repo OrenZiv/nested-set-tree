@@ -22,9 +22,9 @@ In order to run the service locally you need to have an instance of Postgresql 9
 
 ### Installing
 
-The standard installations of the tools mentioned above will suffice.
-On the first run the service will initialize the local database with the necessary table structure. 
-Running this docker command will get you an instance that needs no further configuration:
+The standard installations of the tools mentioned above will suffice.<br>
+On the first run the service will initialize the local database with the necessary table structure. <br>
+Running this docker command will get you a Postgres instance that needs no further configuration:
 ```docker
 docker run --name=nestedTree -e POSTGRES_PASSWORD=CHANGEME -e POSTGRES_USER=CHANGEME -e POSTGRES_DB=nestedTree -p 5432:5432 -d postgres:9.6
 ```
