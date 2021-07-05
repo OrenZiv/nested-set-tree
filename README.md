@@ -18,7 +18,7 @@ The tech stack core of the project:
 
 ### Prerequisites
 
-In order to run the service locally you need to have an instance of Postgresql 9.6 cluster running (either installed locally or running in a Docker container) with a database name `nestedTree`.
+In order to run the service locally you need to have an instance of Postgresql 9.6 cluster running (either installed locally or running in a Docker container) with a database named `nestedTree`.
 
 ### Installing
 
