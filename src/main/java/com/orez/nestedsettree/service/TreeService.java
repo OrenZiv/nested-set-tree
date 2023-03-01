@@ -26,16 +26,35 @@ public class TreeService {
         return rebuildAdjacencyListTreeFrom(parentNode);
     }
 
+    public NodeDTO getAdjacencyListTreeInMem() {
+        List<NodeDTO> nodes =  nodeService.findAll();
+        NodeDTO root = nodes.stream()
+                .filter(node -> node.getParentId() == null)
+                .findFirst()
+                .orElseThrow(() -> new NodeNotFoundException("Root node not found!"));
+
+        return rebuildAdjacencyListTreeInMem(root, nodes);
+    }
+
     public NodeDTO getNestedSetTree() {
         return rebuildNestedSetTree(nodeService.getSortedTreeNodes());
     }
 
     private NodeDTO rebuildAdjacencyListTreeFrom(NodeDTO parentNode) {
-
         nodeService.getChildrenOf(parentNode.getNodeId())
                 .forEach(child -> {
                     parentNode.addChild(child);
                     rebuildAdjacencyListTreeFrom(child);
+                });
+
+        return parentNode;
+    }
+
+    private NodeDTO rebuildAdjacencyListTreeInMem(NodeDTO parentNode, List<NodeDTO> nodes) {
+        nodes.stream().filter(child -> parentNode.getNodeId().equals(child.getParentId()))
+                .forEach(child -> {
+                    parentNode.addChild(child);
+                    rebuildAdjacencyListTreeInMem(child, nodes);
                 });
 
         return parentNode;

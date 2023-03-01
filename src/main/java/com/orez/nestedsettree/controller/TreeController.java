@@ -23,4 +23,9 @@ public class TreeController {
     public NodeDTO getAdjacencyListTree() {
         return treeService.getAdjacencyListTree();
     }
+
+    @GetMapping("/inMemAdjacencyList")
+    public NodeDTO getInMemAdjacencyListTree() {
+        return treeService.getAdjacencyListTreeInMem();
+    }
 }

@@ -25,6 +25,13 @@ public class NodeService {
         this.nodeMapper = nodeMapper;
     }
 
+    public List<NodeDTO> findAll() {
+        return nodeRepository.findAll()
+                .stream()
+                .map(nodeMapper::map)
+                .collect(Collectors.toList());
+    }
+
     public Optional<NodeDTO> getRootNode() {
         return getChildrenOf(null)
                 .stream()
